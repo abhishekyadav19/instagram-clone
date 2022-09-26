@@ -1,0 +1,59 @@
+.sidebar.ul {
+    margin-left: 3rem !important;
+}
+
+.sidebar li {
+    padding: 20px;
+}
+
+.icon_bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.d-flex {
+    display: flex;
+}
+
+body {
+    background-color: #F4F4F4 !important;
+}
+
+.MuiDrawer-paperAnchorLeft {
+    margin-top: 65px !important;
+}
+
+.addpost {
+    margin-bottom: 1.5rem;
+}
+
+.postIcon {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history_image {
+    object-fit: cover;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+
+}
+
+.history_bx_main {
+    margin-bottom: 1rem;
+}
+
+.history_bx {
+    width: 170px;
+}
+
+.history_bx figure {
+    margin-bottom: 0;
+}
+
+.history_bx_main figcaption {
+    text-align: center;
+}

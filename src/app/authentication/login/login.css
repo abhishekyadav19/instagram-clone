@@ -1,0 +1,59 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #B9E0FC;
+}
+
+.button-login {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.login {
+    width: 60%;
+}
+
+@media (max-width:767px) {
+    .login {
+        width: 100%;
+    }
+}
+
+.icon-group img,
+.icon-group svg {
+    width: 125px;
+    height: 38px
+}
+
+.icon-group {
+    display: flex;
+    justify-content: space-evenly
+}
+
+.main_bx {
+    display: flex;
+    height: 100%;
+    border-radius: 50px !important;
+}
+
+.left_bx {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    align-items: center;
+}
+
+.login_content {
+    width: 60%
+}
+
+.login_image {
+    width: 50%;
+    object-fit: cover;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap');

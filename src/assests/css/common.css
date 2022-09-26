@@ -1,0 +1,9 @@
+.error{
+    color: red;
+    padding-left: 5px;
+    margin-top: 3px;
+    font-size: 13px;
+}
+.react-datepicker-popper{
+    z-index: 3;
+}
