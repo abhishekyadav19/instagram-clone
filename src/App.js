@@ -1,5 +1,8 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Login from './app/authentication/login/Login';
+import ProtectedRoute from './app/authentication/protected-route/ProtectedRoute';
+import Context from './app/main/context/context';
 
 
 const loading = (
@@ -12,22 +15,22 @@ const loading = (
 const DefaultLayout = lazy(() => import('./app/layouts/Layout'))
 
 // Pages
-const Login = lazy(() => import('./app/authentication/login/Login'));
-const Register = lazy(() => import('./app/authentication/ragister/Ragister'));
+// const Login = lazy(() => import('./app/authentication/login/Login'));
+const Ragister = lazy(() => import('./app/authentication/ragister/Ragister'));
 
 
 const App = () => {
 
   return (
-    <BrowserRouter>
+    <Context>
       <Suspense fallback={loading}>
         <Routes>
-          <Route path="*" element={<DefaultLayout />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/ragister" element={<Register />} />
+          <Route path="*" element={<ProtectedRoute><DefaultLayout /></ProtectedRoute>} />
+          <Route path="/" element={<Login />} />
+          <Route path="/ragister" element={<Ragister />} />
         </Routes>
       </Suspense>
-    </BrowserRouter>
+    </Context>
   )
 }
 

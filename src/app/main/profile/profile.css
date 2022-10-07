@@ -1,0 +1,56 @@
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.update-button {
+    background-color: aqua;
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+}
+
+body {
+    background-color: #f4f4f4 !important;
+}
+
+.profile-name {
+    display: flex;
+    align-items: center;
+}
+
+.profile-name h2 {
+    margin-right: 1rem
+}
+
+.followers {
+    display: flex;
+}
+
+.followers p {
+    margin-right: 1rem;
+}
+
+.followers p b {
+    margin-right: .2rem;
+}
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    height: 100%
+}
+
+.profile-Dimage {
+    width: 100%;
+}
+
+.image-gallerysection {
+    margin-top: 3rem;
+}
+
+.profile-head {
+    margin-top: 3rem;
+}

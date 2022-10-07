@@ -1,58 +1,52 @@
-import { Button, Card, CardContent, FormControl, Grid, TextField, Link } from '@mui/material'
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
-import Spinner from '../../../utils/loader/Spinner'
-import { getToken } from '../../../utils/token'
-import { loginusernew } from '../../store/actions/loginActions'
-import './login.css'
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { Button, Card, CardContent, Grid, TextField, Link } from '@mui/material'
+import React, { useContext, useEffect, useState } from 'react'
 import GooglePlayIMG from "../../../assests/images/google-play-logo.jpg"
 import AppstoreSvg from "../../../assests/images/appstore.svg"
 import MobileImg from "../../../assests/images/mobile.jpg"
+import { useNavigate } from 'react-router-dom'
+import { auth } from "../../../utils/firebase/firebase.config";
+import "./login.css"
+import { usercontext } from '../../main/context/context'
+
+
 
 const Login = () => {
-  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const { username } = useContext(usercontext)
 
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: ''
-    },
-    validationSchema: Yup.object({
-      email: Yup.string().email('Invalid email address').required('Required'),
-      password: Yup
-        .string()
-        .required('Please Enter your password')
-      // .matches(
-      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-      //   "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-      // ),
-    }),
-    onSubmit: values => {
-      dispatch(loginusernew(values))
+  console.log(username);
 
-    },
-  });
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  })
+  // const handleSignIn = (e) => {
+  //   console.log("handling sign in");
+  //   e.preventDefault();
 
-  const { loading, error } = useSelector(state => state.loginReducer)
+  //   auth.signInWithEmailAndPassword(email, password)
+  //     .catch((error) => {
+  //       alert(error.message);
+  //     });
+  //   if (email && password !== "") {
+  //     navigate("/home")
+  //   }
 
-  if (error) {
-    return <div>Error! {error.message}</div>;
+  // };
+
+  const { login } = useContext(usercontext)
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      await login(email, password);
+      navigate("/home");
+    } catch (error) {
+      console.log(error);
+    }
   }
-
-  // if (loading) {
-  //   return <Spinner/>;
-  // }
 
   return (
     <>
-      <form onSubmit={formik.handleSubmit}>
+      <form>
         <div className="wrapper">
           <div className="login">
             <Card variant="outlined" className='main_bx'>
@@ -61,30 +55,29 @@ const Login = () => {
                   <h1 style={{ textAlign: "center", fontFamily: `'Grand Hotel', cursive` }}>Instagram</h1>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <TextField size="small" id="email" label="eve.holt@reqres.in" variant="outlined" fullWidth name='email' {...formik.getFieldProps('email')} />
-                      {formik.touched.email && formik.errors.email ? (
-                        <div className='error'>{formik.errors.email}</div>
-                      ) : null}
+                      <TextField size="small" id="email" label="Email" variant="outlined"
+                        fullWidth name='email' value={email} onChange={(e) => setEmail(e.target.value)} />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField size="small" id="opassword" label="cityslicka" variant="outlined" fullWidth name='password' {...formik.getFieldProps('password')} />
-                      {formik.touched.password && formik.errors.password ? (
-                        <div className='error'>{formik.errors.password}</div>
-                      ) : null}
+                      <TextField size="small" type={password} id="password" label="Password" variant="outlined"
+                        fullWidth name='password' value={password} onChange={(e) => setPassword(e.target.value)} />
                     </Grid>
                   </Grid>
                   <div className='button-login'>
-                    <Button type='submit' variant='outlined'  >Login</Button>
+                    <Button type='submit' variant='outlined' onClick={handleSignIn} >Login</Button>
                   </div>
-                  <div style={{ textAlign: "center", marginBottom: "1rem", cursor: "pointer" }}> <Link to="/" >Forget Password ?</Link></div>
-                  <div style={{ textAlign: "center", marginBottom: "1.5rem" }}> <span style={{ marginRight: "5px" }}>Dont have an account</span><Link to="/" style={{ cursor: "pointer" }}>Sign Up</Link></div>
+                  <div style={{ textAlign: "center", marginBottom: "1rem", cursor: "pointer" }}> <Link to="#" >Forget Password ?</Link></div>
+                  <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+                    <span style={{ marginRight: "5px" }}>Dont have an account</span>
+                    <Link onClick={() => navigate("/ragister")} style={{ cursor: "pointer" }}>Sign Up</Link>
+                  </div>
                   <div className="icon-group">
                     <img src={GooglePlayIMG} alt="" />
                     <img src={AppstoreSvg} alt="" />
                   </div>
                 </div>
               </CardContent>
-              <img src={MobileImg} alt="image" className='login_image' />
+              <img src={MobileImg} alt="name" className='login_image' />
             </Card>
           </div>
         </div>

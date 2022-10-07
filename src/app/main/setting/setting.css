@@ -1,0 +1,9 @@
+.chk-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chk-box p {
+    margin-bottom: 0;
+}

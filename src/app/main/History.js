@@ -1,43 +1,103 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { useEffect, useState } from "react";
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import Img from "../../assests/images/dummywomen.jpg"
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./index.css"
+import { faker } from "@faker-js/faker";
 
 
 const History = () => {
-    const [images, setiImages] = React.useState([
-        { id: 1, image: "/assests/images/dummywomen.jpg", name: "nik Jonus" },
-        { id: 2, image: "../../assests/images/dummywomen.jpg", name: "nik 2" },
-        { id: 3, image: "../../assests/images/dummywomen.jpg", name: "nik Jonus 3" },
-        { id: 4, image: "../../assests/images/dummywomen.jpg", name: "nik Jonus" },
+    const [suggestions, setSuggestions] = useState([]);
 
-    ])
+    const settings = {
+        infinite: false,
+        speed: 2000,
+        slidesToShow: 5,
+        swipeToSlide: true,
+        slidesToScroll: 5,
+        autoplaySpeed: 2000,
+        responsive: [
+            {
+                breakpoint: 1364,
+                settings: {
+                    infinite: false,
+                    speed: 2000,
+                    slidesToShow: 4,
+                    swipeToSlide: true,
+                    slidesToScroll: 6,
+                    autoplaySpeed: 2000,
+                }
+            },
+            {
+                breakpoint: 1024,
+                settings: {
+                    infinite: false,
+                    speed: 2000,
+                    slidesToShow: 3,
+                    swipeToSlide: true,
+                    slidesToScroll: 3,
+                    autoplaySpeed: 2000,
+                }
+            },
+            {
+                breakpoint: 600,
+                setting: {
+                    infinite: false,
+                    speed: 2000,
+                    slidesToShow: 2,
+                    swipeToSlide: true,
+                    slidesToScroll: 2,
+                    autoplaySpeed: 2000,
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    };
+    useEffect(() => {
+        const suggestions = [...Array(20)].map((_, i) => ({
+            userId: faker.datatype.uuid(),
+            username: faker.internet.userName(),
+            // email: faker.internet.email(),
+            avatar: faker.image.avatar(),
+            // password: faker.internet.password(),
+            // birthdate: faker.date.birthdate(),
+            // registeredAt: faker.date.past(),
+            id: i,
+        }));
+        setSuggestions(suggestions);
+    }, []);
     return (
         <div>
-            <Card className="history_bx_main">
-                <CardContent className='d-flex'>
-                    {
-                        images.map((item) => (
-                            <div className="history_bx" key={item.id}>
-                                <figure>
-                                    <img src={Img} alt="" className='history_image' />
-                                </figure>
-                                <figcaption >Nik {item.name}</figcaption>
-                            </div>
-                        ))
-                    }
+            <Card className="history_bx_main width-section"  >
+                <CardContent className='-flex'>
+                    <Slider {...settings}>
+
+                        {
+                            suggestions.map((item) => (
+
+                                <div className="history_bx" key={item.userId}>
+                                    <figure>
+                                        <img src={item.avatar} alt="item.avatar" className='history_image' />
+                                    </figure>
+                                    <figcaption >{item.username}</figcaption>
+                                </div>
+
+                            ))
+                        }
+                    </Slider>
 
                 </CardContent>
             </Card>
-        </div>
+        </div >
     )
 }
 

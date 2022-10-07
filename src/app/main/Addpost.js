@@ -1,67 +1,39 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
-import firebase from 'firebase/compat/app';
-import { db, storage } from "../../utils/firebase/config"
-import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { usercontext } from './context/context';
 
 
-const Addpost = () => {
-    const [caption, setCaption] = useState("")
-    const [image, setImage] = useState("")
-    const [imgUrl, setImgUrl] = useState(null);
-    const [progress, setProgress] = useState(0);
+const Addpost = (props) => {
+    const [title, setTitle] = useState("");
+    const { addref, image, setImage, progress, setProgress, create } = useContext(usercontext)
 
-    const handlesubmit = (e) => {
-        e.preventDefault()
-        const storage = getStorage();
-        const storageRef = ref(storage, `images/${image.name}`);
+    useEffect(() => {
+        addref?.current?.focus()
+    }, [])
 
-        const uploadTask = uploadBytesResumable(storageRef, image);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                //progress function ...
-                const progress = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-                console.log(progress)
-                setProgress(progress);
-            },
-            (error) => {
-                // Error Function gives Error Message
-                console.log(error);
-                alert(error.message);
-            },
-
-            () => {
-                // complete function ...
-                storage
-                    .ref("images")
-                    .child(`${image.name}`)
-                    .getDownloadURL()
-                    .then((url) => {
-                        // post the Images inside db.
-                        console.log(url);
-
-
-                        setProgress(0);
-                        setCaption("");
-                        setImage(null);
-                    });
-            }
-        );
+    // console.log("xyz");
+    console.log(props, "addpost props");
+    const handleUpload = (e) => {
+        e.preventDefault();
+        create({ title, image });
+        setTitle("");
+        setImage("");
     };
+    const handleChangeImage = (e) => {
+        setImage(e.target.files[0])
+    }
+
     return (
         <>
-            <form onSubmit={handlesubmit}>
+            <form >
                 <div className="addpost">
-                    <Card sx={{ maxWidth: 845 }}>
+                    <Card className='width-section'>
                         <CardContent>
-                            <progress value={progress} />
+                            {/* <progress value={progress} /> */}
                             <h2 style={{ marginTop: "0" }}>Create a post</h2>
                             <TextField
                                 id="outlined-multiline-static"
@@ -69,20 +41,21 @@ const Addpost = () => {
                                 rows={2}
                                 multiline
                                 fullWidth
-                                value={caption}
-                                onChange={(e) => setCaption(e.target.value)}
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
                             />
                             <div className="postIcon">
-                                <label htmlFor="upload-image">
+                                <label htmlFor="upload-image" name="upload-image" className='camera-icon'>
                                     <AddAPhotoIcon fontSize="large" />
                                 </label>
-                                <input type="file" name="upload-image" id="upload-image" hidden onChange={(e) => setImage(e.target.files[0])} />
-                                <Button type='submit' variant="contained">Create</Button>
+                                <input ref={addref} type="file" name="upload-image" id="upload-image" hidden onChange={handleChangeImage} autoFocus />
+                                <Button variant="contained" onClick={handleUpload}>Create</Button>
                             </div>
                         </CardContent>
                     </Card>
                 </div>
             </form>
+
         </>
     )
 }
